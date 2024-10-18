@@ -28,7 +28,7 @@ namespace Java_Version_Manager
             {
                 using (FileStream fs = File.Create(settingsfile))
                 {
-                    byte[] info = new UTF8Encoding(true).GetBytes("javadir|C:\\Java\\Versions");
+                    byte[] info = new UTF8Encoding(true).GetBytes("javadir|C:\\JavaVersions");
 
                     fs.Write(info, 0, info.Length);
                 }

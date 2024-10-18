@@ -35,9 +35,9 @@ namespace Java_Version_Manager
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (!javadir.Text.Contains("\\Java\\"))
+            if (javadir.Text.ToUpper().Contains("\\JAVA\\"))
             {
-                MessageBox.Show("Java path MUST contain \"\\Java\\\"");
+                MessageBox.Show("Java path can not contain \"\\Java\\\"");
                 return;
             }
             string newsettings = "";

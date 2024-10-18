@@ -75,30 +75,49 @@ namespace Java_Version_Manager
             catch (Exception)
             {
             }
+
+
+
             
-
-    
-
+            
             string illegalfiles = "appletviewer.exe|extcheck.exe|idlj.exe|jabswitch.exe|jar.exe|jarsigner.exe|java-rmi.exe|java.exe|javac.exe|javadoc.exe|javafxpackager.exe|javah.exe|javap.exe|javapackager.exe|javaw.exe|javaws.exe|jcmd.exe|jconsole.exe|jdb.exe|jdeps.exe|jhat.exe|jinfo.exe|jjs.exe|jli.dll|jmap.exe|jmc.exe|jmc.ini|jps.exe|jrunscript.exe|jsadebugd.exe|jstack.exe|jstat.exe|jstatd.exe|jvisualvm.exe|keytool.exe|kinit.exe|ktab.exe|msvcr100.dll|native2ascii.exe|orbd.exe|pack200.exe|policytool.exe|rmic.exe|rmid.exe|rmiregistry.exe|schemagen.exe|serialver.exe|servertool.exe|tnameserv.exe|unpack200.exe|wsgen.exe|wsimport.exe|xjc.exe";
-            string vars = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Machine);
-            if (vars.Contains("\\JAVA\\"))
             {
-                if (!IsUserAnAdmin())
+                string vars = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Machine);
+                if (vars.ToUpper().Contains("\\JAVA\\"))
                 {
-                    MessageBox.Show("Java Environment Variables on administrator level detected. To run, you must first run this program with administrator privileges.\r\n\r\nRemember that this will disable your previous java installations", "Environment Variable Error");
-                    Application.Exit();
-                    return;
-                }
-                string newpath1 = "C:\\exedir";
-                foreach (string var in vars.Split(';'))
-                {
-                    if (!var.Contains("\\Java\\"))
+                    if (!IsUserAnAdmin())
                     {
-                        newpath1 = newpath1 + ";" + var;
+                        MessageBox.Show("Java Environment Variables on administrator level detected. To run, you must first run this program with administrator privileges.\r\n\r\nRemember that this will disable your previous java installations", "Environment Variable Error");
+                        Application.Exit();
+                        return;
                     }
+                    string newpath1 = "C:\\exedir";
+                    foreach (string var in vars.Split(';'))
+                    {
+                        if (!var.ToUpper().Contains("\\JAVA\\"))
+                        {
+                            newpath1 = newpath1 + ";" + var;
+                        }
+                    }
+                    Environment.SetEnvironmentVariable("PATH", newpath1, EnvironmentVariableTarget.Machine);
+                    MessageBox.Show("Cleaned Java Environment Variables on administrator level!");
                 }
-                Environment.SetEnvironmentVariable("PATH", newpath1, EnvironmentVariableTarget.Machine);
-                MessageBox.Show("Cleaned Java Environment Variables on administrator level!");
+            }
+            {
+                string vars = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.User);
+                if (vars.ToUpper().Contains("\\JAVA\\"))
+                {
+                    string newpath1 = "C:\\exedir";
+                    foreach (string var in vars.Split(';'))
+                    {
+                        if (!var.ToUpper().Contains("\\JAVA\\"))
+                        {
+                            newpath1 = newpath1 + ";" + var;
+                        }
+                    }
+                    Environment.SetEnvironmentVariable("PATH", newpath1, EnvironmentVariableTarget.User);
+                    MessageBox.Show("Cleaned Java Environment Variables on user level!");
+                }
             }
             foreach (var file in illegalfiles.Split('|'))
             {
